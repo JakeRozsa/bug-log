@@ -1,12 +1,20 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
+      <router-link to="/"><i class="fas fa-home"></i></router-link>
     </div>
     <router-view />
   </div>
 </template>
 
+<script>
+  export default {
+    mounted() {
+      this.$store.dispatch('getBugs')
+      this.$store.dispatch('getNotes')
+    }
+  }
+</script>
 <style>
   #app {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -18,6 +26,9 @@
 
   #nav {
     padding: 30px;
+    position: fixed;
+    left: 50px;
+    top: 5px;
   }
 
   #nav a {
@@ -27,5 +38,10 @@
 
   #nav a.router-link-exact-active {
     color: #42b983;
+  }
+
+  .fas {
+    text-shadow: 0px 0px 5px black;
+    font-size: 30px;
   }
 </style>
