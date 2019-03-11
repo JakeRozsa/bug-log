@@ -15,6 +15,7 @@ export default new Router({
     },
     {
       path: '/buggy/:id',
+      props: true,
       name: 'buggy',
       component: function () {
         // @ts-ignore

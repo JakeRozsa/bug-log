@@ -11,7 +11,6 @@
   export default {
     mounted() {
       this.$store.dispatch('getBugs')
-      this.$store.dispatch('getNotes')
     }
   }
 </script>

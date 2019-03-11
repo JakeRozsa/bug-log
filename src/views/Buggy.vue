@@ -1,5 +1,5 @@
 <template>
-  <div class="row Buggy">
+  <div class="row Buggy" v-if="findBug">
     <div class="card main-card col-8 offset-2">
       <b>{{findBug.title}} ~ Author: {{findBug.creator}} </b><br> {{findBug.description}}
       <button @click="deleteBug(findBug._id)" v-show="!findBug.closed"><i class="fas fa-dumpster"></i></button>
@@ -13,16 +13,16 @@
   import BugDetail from '@/components/BugDetail.vue'
   export default {
     name: 'Buggy',
+    props: ['id'],
     data() {
       return {
       }
     },
     mounted() {
       let id = this.$route.params.id
-
-      this.$router.params.id.dispatch('bug')
       this.$store.dispatch('getBugs')
-      this.$store.dispatch('getNotes')
+      this.$store.dispatch('getNotes', this.$route.params.id)
+
     },
     computed: {
       findBug() {

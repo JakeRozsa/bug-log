@@ -23,7 +23,7 @@ export default new Vuex.Store({
       state.bugs.push(data)
     },
     addNote(state, data) {
-      state.notes.push(data)
+      state.notes = data
     },
     setNotes(state, data) {
       state.notes = data
@@ -34,14 +34,14 @@ export default new Vuex.Store({
   },
   actions: {
     createBug({ commit, dispatch }, payload) {
-      _api.post('', payload)
+      _api.post('bugs', payload)
         .then(res => {
           console.log(res.data)
           commit('addBug', res.data.results)
         })
     },
     getBugs({ commit, dispatch }) {
-      _api.get('bugs')
+      _api.get('bugs/')
         .then(res => {
           commit('setBugs', res.data.results)
         })
@@ -53,15 +53,13 @@ export default new Vuex.Store({
         })
     },
     createNote({ commit, dispatch }, payload) {
-      let id = this.state.activeBug
-      _api.post(id + '/notes', payload)
+      _api.post('bugs/' + payload.bug + '/notes', payload)
         .then(res => {
-          dispatch('getNotes')
+          dispatch('getNotes', res.data.results.bug)
         })
     },
-    getNotes({ commit, dispatch }) {
-      let id = this.state.activeBug
-      _api.get(id + '/notes')
+    getNotes({ commit, dispatch }, bugId) {
+      _api.get('bugs/' + bugId + '/notes')
         .then(res => {
           console.log(res.data)
           commit('setNotes', res.data.results)
@@ -69,6 +67,12 @@ export default new Vuex.Store({
     },
     setActiveBug({ commit, dispatch }, payload) {
       commit('setActive', payload)
-    }
+    },
+    deleteNote({ commit, dispatch }, payload) {
+      _api.delete('bugs/' + payload.bug + '/notes', payload)
+        .then(res => {
+          dispatch('getNotes')
+        })
+    },
   }
 })

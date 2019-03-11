@@ -4,7 +4,6 @@
       <div class="col-12">
         <form @submit.prevent="addNote">
           <input v-model="noteForm.creator" type="text" placeholder="Username" required>
-          <input v-model="noteForm.user" type="text" placeholder="Note Title" required>
           <input v-model="noteForm.content" type="text" placeholder="Note Info" required>
           <button type="submit">Submit Note</i></button>
         </form>
@@ -12,7 +11,7 @@
       <div class=" text-center card col-3" v-for="note in notes">
         <p>Note Author: {{note.creator}}</p>
         <p>Note: {{note.content}}</p>
-        <button>Change Status</button>
+        <button @click="deleteNote">Change Status</button>
       </div>
     </div>
   </div>
@@ -28,13 +27,13 @@ flagged: { type: String, enum: ["pending", "completed", "rejected"] }
 <script>
   export default {
     name: 'bugdetail',
-    props: {
-      msg: String
-    },
+    props: [
+      'id'
+    ],
     data() {
       return {
-        bug: {},
-        noteForm: {}
+        noteForm: {},
+        note: []
       }
     },
     computed: {
@@ -46,7 +45,12 @@ flagged: { type: String, enum: ["pending", "completed", "rejected"] }
     },
     methods: {
       addNote() {
+        this.noteForm.bug = this.$route.params.id
+        this.note.bug = this.$route.params.id
         this.$store.dispatch('createNote', this.noteForm)
+      },
+      deleteNote(id) {
+        this.$store.dispatch('deleteNote', id)
       }
     },
     components: {}
