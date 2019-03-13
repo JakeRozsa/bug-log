@@ -4,7 +4,7 @@
       <b>{{findBug.title}} ~ Author: {{findBug.creator}} </b><br> {{findBug.description}}
       <button @click="deleteBug(findBug._id)" v-show="!findBug.closed"><i class="fas fa-dumpster"></i></button>
     </div>
-    <bug-detail></bug-detail>
+    <bug-detail :findBug="findBug"></bug-detail>
   </div>
 </template>
 

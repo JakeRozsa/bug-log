@@ -2,7 +2,8 @@
   <div class="col-12 bugdetail">
     <div class="row">
       <div class="col-12">
-        <form @submit.prevent="addNote">
+        <!-- CHECK THE V SHOW -->
+        <form @submit.prevent="addNote" v-if="!findBug.closed">
           <input v-model="noteForm.creator" type="text" placeholder="Username" required>
           <input v-model="noteForm.content" type="text" placeholder="Note Info" required>
           <button type="submit">Submit Note</i></button>
@@ -29,7 +30,8 @@ flagged: { type: String, enum: ["pending", "completed", "rejected"] }
   export default {
     name: 'bugdetail',
     props: [
-      'id'
+      'id',
+      'findBug'
     ],
     data() {
       return {
