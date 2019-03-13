@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Axios from 'axios'
+import router from './router.js'
 
 let _api = Axios.create({
   baseURL: 'https://bcw-sandbox.herokuapp.com/api/Jaker1',
@@ -46,6 +47,12 @@ export default new Vuex.Store({
           commit('setBugs', res.data.results)
         })
     },
+    getBug({ commit, dispatch }, payload) {
+      _api.get('bugs/' + payload)
+        .then(res => {
+          commit('setActiveBug', res.data.results)
+        })
+    },
     deleteBug({ commit, dispatch }, payload) {
       _api.delete('bugs/' + payload)
         .then(res => {
@@ -65,14 +72,12 @@ export default new Vuex.Store({
           commit('setNotes', res.data.results)
         })
     },
-    setActiveBug({ commit, dispatch }, payload) {
-      commit('setActive', payload)
-    },
     deleteNote({ commit, dispatch }, payload) {
-      _api.delete('bugs/' + payload.bug + '/notes', payload)
+
+      _api.delete('/bugs/' + payload.bug + '/notes/' + payload.id)
         .then(res => {
-          dispatch('getNotes')
+          dispatch('getNotes', payload.bug)
         })
-    },
+    }
   }
 })

@@ -31,6 +31,9 @@
         return bugs.find(bug => {
           return bug._id == bugID
         })
+      },
+      bug() {
+        return this.$store.state.activeBug
       }
     },
     methods: {

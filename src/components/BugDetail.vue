@@ -8,10 +8,11 @@
           <button type="submit">Submit Note</i></button>
         </form>
       </div>
-      <div class=" text-center card col-3" v-for="note in notes">
+      <div class=" text-center card col-3" v-for="note in notes"
+        :class="{'bg-info' : !note.closed, 'bg-danger' : note.closed}">
         <p>Note Author: {{note.creator}}</p>
         <p>Note: {{note.content}}</p>
-        <button @click="deleteNote">Change Status</button>
+        <i class="fas fa-dumpster" @click="deleteNote(note._id)"></i>
       </div>
     </div>
   </div>
@@ -36,11 +37,24 @@ flagged: { type: String, enum: ["pending", "completed", "rejected"] }
         note: []
       }
     },
+    mounted() {
+      this.$store.dispatch('getNotes', this.$route.params.id)
+      this.$store.dispatch('getBugs', this.$route.params.id)
+    },
     computed: {
       notes() {
         return this.$store.state.notes.filter(note => {
           return note.bug == this.$route.params.id
         })
+      },
+      bug() {
+        return this.$store.state.activeBug
+      },
+      activeNote() {
+        return this.$store.state.activeNote
+      },
+      findNote() {
+        let noteID
       }
     },
     methods: {
@@ -50,9 +64,10 @@ flagged: { type: String, enum: ["pending", "completed", "rejected"] }
         this.$store.dispatch('createNote', this.noteForm)
       },
       deleteNote(id) {
-        this.$store.dispatch('deleteNote', id)
+        this.$store.dispatch('deleteNote', { bug: this.$route.params.id, id: id })
       }
     },
+
     components: {}
   }
 </script>

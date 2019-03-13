@@ -7,7 +7,7 @@
     </div>
     <bugs />
     <div class="row">
-      <div class="col-8 offset-2 text-center card" v-for="bug in bugs"
+      <div @click="setActiveBug" class="col-8 offset-2 text-center card" v-for="bug in bugs"
         :class="{'bg-info' : !bug.closed, 'bg-danger' : bug.closed}">
         <router-link :to="'/buggy/'+bug._id" class="router">
           <p>{{bug.title}} ~ <b>{{bug.creator}}</b> <br> {{bug.description}}</p>
@@ -34,7 +34,9 @@
       this.$store.dispatch('getBugs')
     },
     methods: {
-
+      setActiveBug(bug) {
+        this.$store.dispatch('setActiveBug', bug)
+      },
     },
     computed: {
       bugs() {
